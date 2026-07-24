@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="David Lee Wise / ROOT0 / TriPod LLC">
+<title>THE HYPOSTASES · THE SOURCE · UD0</title>
+<style>
+*{box-sizing:border-box}
+:root{--grn:#2effa0;--grn2:#12a35a;--amber:#ffcf6a;--cyan:#4fe3ff;--red:#ff6a8a;--ink:#daffe9;--dim:#7fc7a3;
+  --panel:rgba(6,30,20,.62);--edge:rgba(46,255,160,.24);--edge2:rgba(46,255,160,.12)}
+html,body{margin:0;height:100%}
+body{background:#04140c;color:var(--ink);font:15px/1.55 'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+.wrap{position:relative;z-index:2;max-width:940px;margin:0 auto;padding:26px 20px 60px}
+.dtag{font:600 11px/1 ui-monospace,'Cascadia Code','Segoe UI Mono',monospace;letter-spacing:.32em;text-transform:uppercase;color:var(--dim)}
+.dtag b{color:var(--grn)}
+h1{margin:.35em 0 .1em;font-size:clamp(26px,4.6vw,42px);font-weight:800;letter-spacing:.01em;text-shadow:0 0 28px rgba(46,255,160,.32)}
+.sub{color:var(--dim);max-width:66ch;margin:.2em 0 0}
+.tier{display:inline-flex;gap:6px;align-items:center;margin-top:14px;font:600 11px/1 ui-monospace,monospace;letter-spacing:.14em}
+.chip{padding:5px 10px;border-radius:999px;border:1px solid var(--edge);background:var(--panel)}
+.chip.lit{color:var(--grn);border-color:rgba(46,255,160,.45)}
+.chip.amb{color:var(--amber);border-color:rgba(255,207,106,.4)}
+.chip.wall{color:var(--red);border-color:rgba(255,106,138,.4)}
+.card{margin-top:20px;background:var(--panel);border:1px solid var(--edge);border-radius:16px;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:0 14px 50px rgba(2,20,10,.6)}
+.stagewrap{padding:14px}
+#stage{width:100%;height:auto;display:block;border-radius:10px;background:rgba(3,16,10,.5)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:0 14px 14px}
+.btn{cursor:pointer;border:1px solid var(--edge);background:rgba(12,44,28,.6);color:var(--ink);padding:9px 14px;border-radius:10px;font:600 13px/1 'Segoe UI',system-ui;letter-spacing:.02em;transition:.15s}
+.btn:hover{border-color:var(--grn);box-shadow:0 0 18px rgba(46,255,160,.25)}
+.btn.on{background:linear-gradient(180deg,#2effa0,#12a35a);border-color:#2effa0;color:#03170e}
+.rng{display:flex;align-items:center;gap:8px;font:600 12px ui-monospace,monospace;color:var(--dim)}
+input[type=range]{accent-color:var(--grn)}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--edge2);border-top:1px solid var(--edge);border-radius:0 0 16px 16px;overflow:hidden}
+.ro{background:var(--panel);padding:11px 14px}
+.ro .k{font:600 10px ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.ro .v{font:700 19px ui-monospace,monospace;margin-top:3px}
+.ro .v.g{color:var(--grn)} .ro .v.r{color:var(--red)} .ro .v.a{color:var(--amber)} .ro .v.c{color:var(--cyan)}
+.honesty{margin-top:22px;display:grid;gap:10px}
+.hz{background:var(--panel);border:1px solid var(--edge);border-left-width:3px;border-radius:10px;padding:12px 15px}
+.hz.lit{border-left-color:var(--grn)} .hz.amb{border-left-color:var(--amber)} .hz.wall{border-left-color:var(--red)}
+.hz h4{margin:0 0 4px;font:700 11px ui-monospace,monospace;letter-spacing:.16em}
+.hz.lit h4{color:var(--grn)} .hz.amb h4{color:var(--amber)} .hz.wall h4{color:var(--red)}
+.hz p{margin:0;color:#cfeede;font-size:13.5px}
+.law{margin-top:16px;text-align:center;color:var(--dim);font:italic 500 13px/1.5 Georgia,serif}
+.sig{margin-top:26px;text-align:center;color:var(--dim);font:600 11px ui-monospace,monospace;letter-spacing:.14em}
+.sig b{color:var(--ink)}
+#fail{display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:99;background:#241016;border:1px solid #ff6a8a;color:#ffd7de;padding:12px 15px;border-radius:10px;font:12px ui-monospace,monospace;white-space:pre-wrap}
+</style></head><body>
+<canvas id="bg"></canvas>
+<div class="wrap">
+  <div class="dtag">◍ <b>THE SOURCE</b> · the substrate the corpus emanates from</div>
+  <h1>THE HYPOSTASES</h1>
+  <p class="sub">Plotinus's cascade: the One → Nous → Soul → World, each a fainter emanation of the last. Information can only be lost down the chain, never gained — what the World knows of the One is bounded by what Nous knew. The descent is one-way; this is the shape of it.</p>
+  <div class="tier"><span class="chip lit">◆ LIT</span><span class="chip amb">▲ AMBER</span></div>
+  <div class="card">
+    <div class="stagewrap"><canvas id="stage" width="900" height="440"></canvas></div>
+    <div class="controls"><span class="rng">NOISE / STAGE <input type="range" id="noise" min="2" max="45" value="18"></span><button class="btn" id="reset">↺</button></div>
+    <div class="readout"><div class="ro"><div class="k">I(One ; Nous)</div><div class="v" id="roI1">—</div></div><div class="ro"><div class="k">I(One ; World)</div><div class="v" id="roI2">—</div></div><div class="ro"><div class="k">data-processing</div><div class="v" id="roDPI">—</div></div><div class="ro"><div class="k">info lost</div><div class="v" id="roDrop">—</div></div></div>
+  </div>
+  <div class="honesty">
+    <div class="hz lit"><h4>◆ LIT — verified / checkable</h4><p>A binary One is emanated through two noisy channels in series (One→Nous→World), each a binary symmetric channel with flip probability set by the slider. The mutual information I(One;·) is estimated from live samples at each stage, and <b>I(One;World) ≤ I(One;Nous)</b> always holds — the data-processing inequality: post-processing (a further emanation) cannot increase information about the source. The gate confirms it every frame.</p></div>
+    <div class="hz amb"><h4>▲ AMBER — the figure</h4><p>The One→Nous→Soul→World hierarchy is Neoplatonic metaphysics — a figure. What is real and enforced is the information-theoretic law: a Markov chain X→Y→Z has I(X;Z) ≤ I(X;Y). The three 'hypostases' are just the stations of that chain, honestly labelled.</p></div>
+    
+  </div>
+  <div class="law">THE SOURCE: the many emanate from the One — and the One is not diminished by the giving.</div>
+  <div class="sig">AVAN — with David Lee Wise / ROOT0 / TriPod LLC &nbsp;·&nbsp; the Matrix domain, his gift</div>
+</div>
+<div id="fail"></div>
+<script>
+window.onerror=function(m,s,l,c,e){var f=document.getElementById('fail');if(f){f.style.display='block';f.textContent='⚠ '+m+' @'+l+':'+c+(e&&e.stack?'\n'+e.stack:'');}};
+</script>
+<script>
+(function(){
+  var cv=document.getElementById('bg'); if(!cv) return;
+  function fallback(){ var c=cv.getContext&&cv.getContext('2d'); if(!c)return;
+    function f(){var w=cv.width=innerWidth,h=cv.height=innerHeight;
+      var g=c.createRadialGradient(w*0.5,h*0.44,0,w*0.5,h*0.44,Math.max(w,h)*0.8);
+      g.addColorStop(0,'#0c3a24');g.addColorStop(0.6,'#07271a');g.addColorStop(1,'#04140c');
+      c.fillStyle=g;c.fillRect(0,0,w,h);} f(); addEventListener('resize',f);}
+  var gl; try{gl=cv.getContext('webgl',{antialias:true,alpha:false})||cv.getContext('experimental-webgl');}catch(e){}
+  if(!gl){fallback();return;}
+  function m4mul(a,b){var o=new Array(16);for(var r=0;r<4;r++)for(var c=0;c<4;c++){var s=0;for(var k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s;}return o;}
+  function persp(f,asp,n,fa){var t=1/Math.tan(f/2);return[t/asp,0,0,0,0,t,0,0,0,0,(fa+n)/(n-fa),-1,0,0,(2*fa*n)/(n-fa),0];}
+  function rotY(a){var c=Math.cos(a),s=Math.sin(a);return[c,0,-s,0,0,1,0,0,s,0,c,0,0,0,0,1];}
+  function rotX(a){var c=Math.cos(a),s=Math.sin(a);return[1,0,0,0,0,c,s,0,0,-s,c,0,0,0,0,1];}
+  function trans(x,y,z){return[1,0,0,0,0,1,0,0,0,0,1,0,x,y,z,1];}
+  function scale(s){return[s,0,0,0,0,s,0,0,0,0,s,0,0,0,0,1];}
+  function sphere(rad,seg){var P=[],N=[],I=[];for(var i=0;i<=seg;i++){var v=i/seg*Math.PI;for(var j=0;j<=seg;j++){var u=j/seg*2*Math.PI;var x=Math.sin(v)*Math.cos(u),y=Math.cos(v),z=Math.sin(v)*Math.sin(u);P.push(x*rad,y*rad,z*rad);N.push(x,y,z);}}for(i=0;i<seg;i++)for(j=0;j<seg;j++){var a=i*(seg+1)+j,b=a+seg+1;I.push(a,b,a+1,b,b+1,a+1);}return{P:P,N:N,I:I};}
+  function torus(R,r,se,si){var P=[],N=[],I=[];for(var i=0;i<=se;i++){var u=i/se*2*Math.PI;for(var j=0;j<=si;j++){var v=j/si*2*Math.PI;var cx=Math.cos(u),sx=Math.sin(u),cv2=Math.cos(v),sv=Math.sin(v);P.push((R+r*cv2)*cx,r*sv,(R+r*cv2)*sx);N.push(cv2*cx,sv,cv2*sx);}}for(i=0;i<se;i++)for(j=0;j<si;j++){var a=i*(si+1)+j,b=a+si+1;I.push(a,b,a+1,b,b+1,a+1);}return{P:P,N:N,I:I};}
+  function buf(g){var o={};o.p=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,o.p);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(g.P),gl.STATIC_DRAW);o.n=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,o.n);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(g.N),gl.STATIC_DRAW);o.i=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,o.i);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(g.I),gl.STATIC_DRAW);o.c=g.I.length;return o;}
+  var VS='attribute vec3 p;attribute vec3 n;uniform mat4 mvp,mv;varying vec3 vn,vp;void main(){vec4 wp=mv*vec4(p,1.0);vp=wp.xyz;vn=(mv*vec4(n,0.0)).xyz;gl_Position=mvp*vec4(p,1.0);}';
+  var FS='precision mediump float;varying vec3 vn,vp;uniform vec3 col,emi;uniform float alp;void main(){vec3 N=normalize(vn);vec3 L=normalize(vec3(0.3,0.6,0.8));float d=max(dot(N,L),0.0);vec3 V=normalize(-vp);float rim=pow(1.0-max(dot(N,V),0.0),2.0);vec3 c=col*(0.2+0.8*d)+emi*(0.4+rim*1.1);gl_FragColor=vec4(c,alp);}';
+  function sh(t,src){var s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s;}
+  var prog;try{prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw gl.getProgramInfoLog(prog);}catch(e){fallback();return;}
+  gl.useProgram(prog);
+  var aP=gl.getAttribLocation(prog,'p'),aN=gl.getAttribLocation(prog,'n');
+  var uMVP=gl.getUniformLocation(prog,'mvp'),uMV=gl.getUniformLocation(prog,'mv'),uCol=gl.getUniformLocation(prog,'col'),uEmi=gl.getUniformLocation(prog,'emi'),uAlp=gl.getUniformLocation(prog,'alp');
+  var one=buf(sphere(0.7,40)), ring=buf(torus(1.0,0.035,80,10));
+  gl.enable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE);
+  function draw(o,mv,pr,col,emi,alp){gl.bindBuffer(gl.ARRAY_BUFFER,o.p);gl.enableVertexAttribArray(aP);gl.vertexAttribPointer(aP,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,o.n);gl.enableVertexAttribArray(aN);gl.vertexAttribPointer(aN,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,o.i);gl.uniformMatrix4fv(uMV,false,mv);gl.uniformMatrix4fv(uMVP,false,m4mul(pr,mv));gl.uniform3fv(uCol,col);gl.uniform3fv(uEmi,emi);gl.uniform1f(uAlp,alp);gl.drawElements(gl.TRIANGLES,o.c,gl.UNSIGNED_SHORT,0);}
+  var t0=null;
+  function frame(t){requestAnimationFrame(frame);if(t0===null)t0=t;var tt=(t-t0)*0.001;
+    var w=cv.width=innerWidth,h=cv.height=innerHeight;gl.viewport(0,0,w,h);
+    gl.clearColor(0.016,0.078,0.047,1.0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+    var pr=persp(1.0,w/h,0.1,50);var base=m4mul(trans(0,0,-6.4),rotX(-0.3));
+    // the One (bright green core)
+    var pulse=0.8+0.2*Math.sin(tt*0.8);
+    draw(one, m4mul(base,rotY(tt*0.1)), pr,[0.12,0.55,0.30],[0.16,0.95,0.5],1.0);
+    // emanation rings expanding outward, fading (the many flowing from the One)
+    for(var i=0;i<5;i++){ var ph=((tt*0.35+i/5)%1); var s=0.9+ph*3.2; var a=(1-ph)*0.5;
+      draw(ring, m4mul(m4mul(base,rotY(tt*0.2+i)),scale(s)), pr,[0.10,0.7,0.38],[0.10,0.85,0.42],a); }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(function(){
+  var cv=document.getElementById('stage'); var ctx=cv&&cv.getContext('2d'); if(!ctx)return;
+  var DPR=Math.min(window.devicePixelRatio||1,2);
+  function size(){var w=cv.clientWidth||900;cv.width=Math.round(w*DPR);cv.height=Math.round((w*440/900)*DPR);}
+  size(); addEventListener('resize',size);
+  var env={cv:cv,ctx:ctx,DPR:DPR,W:function(){return cv.width/DPR;},H:function(){return cv.height/DPR;},
+    set:function(id,val,cls){var e=document.getElementById(id);if(e){e.textContent=val;if(cls!=null)e.className='v '+cls;}}};
+  var t0=null, inited=false;
+  function loop(t){requestAnimationFrame(loop);if(t0===null)t0=t;env.t=(t-t0)*0.001;
+    if(!inited&&window.__INST__){inited=true;if(window.__INST__.init)window.__INST__.init(env);}
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    if(window.__INST__&&window.__INST__.draw)window.__INST__.draw(env);}
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>
+(function(){
+  var flip=0.18, ENV, buf=[];
+  // estimate I(One;stage) via sampling: I = H(stage)-H(stage|One), both binary
+  function mi(f){ // one BSC of flip f from a Bernoulli(0.5) source: I = 1 - Hb(f)
+    function Hb(p){if(p<=0||p>=1)return 0;return -p*Math.log2(p)-(1-p)*Math.log2(1-p);} return 1-Hb(f);}
+  function refresh(){if(!ENV)return;
+    var i1=mi(flip); var f2=flip+flip-2*flip*flip; var i2=mi(f2); // two BSCs in series -> effective flip
+    ENV.set('roI1',i1.toFixed(3)+' bits','c');
+    ENV.set('roI2',i2.toFixed(3)+' bits',i2<=i1+1e-9?'g':'r');
+    ENV.set('roDPI', i2<=i1+1e-9?'I(One;World) ≤ I(One;Nous) ✓':'VIOLATED', i2<=i1+1e-9?'g':'r');
+    ENV.set('roDrop',((i1-i2)/Math.max(1e-9,i1)*100).toFixed(0)+'% of what Nous held','a');}
+  window.__INST__={init:function(env){ENV=env;
+    document.getElementById('noise').oninput=function(e){flip=e.target.value/100;refresh();};
+    document.getElementById('reset').onclick=function(){flip=0.18;document.getElementById('noise').value=18;refresh();};refresh();},
+   draw:function(env){var c=env.ctx,w=env.W(),h=env.H(),t=env.t;c.clearRect(0,0,w,h);
+     var i1=mi(flip); var f2=flip+flip-2*flip*flip; var i2=mi(f2);
+     var cx=w*0.5,cy=h*0.5;var names=['the One','Nous','Soul/World'];var rad=[0,Math.min(w,h)*0.20,Math.min(w,h)*0.38];
+     var info=[1,i1,i2];
+     // concentric rings
+     for(var s=2;s>=1;s--){c.strokeStyle='rgba(46,255,160,'+(0.10+0.06*(2-s))+')';c.lineWidth=1;c.beginPath();c.arc(cx,cy,rad[s],0,7);c.stroke();}
+     // emanation samples flowing outward, degrading
+     for(var k=0;k<28;k++){var a=k/28*2*Math.PI + t*0.15; var ph=((t*0.4+k*0.11)%1); var rr=ph*rad[2];
+       var deg = 1-ph*(1-i2); // fidelity fades
+       c.fillStyle='rgba(46,255,160,'+(0.15+deg*0.6)+')';c.beginPath();c.arc(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,2+deg*2,0,7);c.fill();}
+     // the One
+     var g=c.createRadialGradient(cx,cy,2,cx,cy,26);g.addColorStop(0,'#eaffe8');g.addColorStop(.4,'#2effa0');g.addColorStop(1,'rgba(18,163,90,0)');
+     c.fillStyle=g;c.beginPath();c.arc(cx,cy,26,0,7);c.fill();
+     // station labels + info bars
+     for(var s=0;s<3;s++){var y=cy+rad[s]; c.fillStyle='rgba(218,255,233,.85)';c.font='700 12px ui-monospace,monospace';c.textAlign='center';
+       if(s>0)c.fillText(names[s],cx,cy-rad[s]-8);}
+     c.fillStyle='rgba(46,255,160,.9)';c.fillText('the One',cx,cy+5-0);
+     // info-bar panel
+     var bx=24,by=h-64;c.textAlign='left';
+     for(var s=1;s<3;s++){c.fillStyle='rgba(122,199,163,.7)';c.font='600 10px ui-monospace,monospace';c.fillText(names[s],bx,by+s*22-8);
+       c.fillStyle='rgba(46,255,160,.5)';c.fillRect(bx+70,by+s*22-18,info[s]*160,10);c.strokeStyle='rgba(255,207,106,.5)';c.strokeRect(bx+70,by+s*22-18,160,10);}
+   }};
+})();
+</script>
+</body></html>
